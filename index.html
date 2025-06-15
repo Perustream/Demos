@@ -279,7 +279,20 @@ body {
   .oculto { display: none; }
   .activo { display: block !important; }
 </style>
+
+  <link rel="manifest" href="manifest.json">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+
+<style>
+  .oculto { display: none; }
+  .activo { display: block !important; }
+</style>
 </head>
+
 
 <body>
 
@@ -579,6 +592,28 @@ cargarTodasNoticias();
       }, 8000);
     } else {
       splash?.remove();
+      main?.classList.add("activo");
+    }
+  });
+</script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const splash = document.getElementById("splash");
+    const main = document.getElementById("main-content");
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      // Si está instalada como app
+      setTimeout(() => {
+        splash?.remove();
+        main?.classList.remove("oculto");
+        main?.classList.add("activo");
+      }, 8000);
+    } else {
+      // Si está en navegador web
+      splash?.remove();
+      main?.classList.remove("oculto");
       main?.classList.add("activo");
     }
   });
