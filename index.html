@@ -1,40 +1,588 @@
 
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Radio Fama</title>
-  <link rel="manifest" href="manifest.json">
-  <style>
+<script>
+function compartirContenido() {
+  const url = "https://radiopasion.com";
+  const texto = "Escucha la radio del amor ❤️ en https://radiopasion.com";
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'Radio Pasión',
+      text: texto,
+      url: url
+    }).catch(console.error);
+  } else {
+    const mensaje = encodeURIComponent(texto);
+    const enlaces = [
+      'https://www.facebook.com/sharer/sharer.php?u=' + url,
+      'https://api.whatsapp.com/send?text=' + mensaje,
+      'https://t.me/share/url?url=' + url + '&text=' + mensaje,
+      'https://twitter.com/intent/tweet?text=' + mensaje
+    ];
+    alert('Tu navegador no soporta compartir directamente. Puedes copiar el enlace:
+' + url);
+    window.open(enlaces[0], '_blank');
+  }
+}
+</script>
+<link href="favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="favicon.png" rel="icon" type="image/png"/>
+<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." referrerpolicy="no-referrer" rel="stylesheet"/>
+<link href="manifest.json" rel="manifest"/>
+<meta content="#ffcc00" name="theme-color"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Radio Pasión</title>
+<style>
+    .social a {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .social a:hover {
+      transform: scale(1.2) rotate(5deg);
+      box-shadow: 0 0 12px #ffcc00cc;
+    }
+
+    .social a {
+      transition: all 0.4s ease;
+      animation: flotar 3s infinite ease-in-out;
+    }
+
+    @keyframes flotar {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0); }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: linear-gradient(135deg, #fff1f2, #ffe0e0);
-      font-family: sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      background: #f5f5f5;
+      color: white;
+      position: relative;
+      overflow-x: hidden;
+    }
+    header {
+      background: #ffcc00;
+      color: black;
+      padding: 15px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      position: relative;
+    }
+    .share {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      font-size: 24px;
+    }
+    .main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 30px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
     }
     .logo {
-      margin-top: 20px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 5px solid white;
+      animation: spin 15s linear infinite;
     }
-    .logo img {
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .status {
+      background: #ffcc00;
+      color: black;
+      padding: 8px 20px;
+      margin: 20px 0;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+    .live-badge {
+      background: red;
+      color: white;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+      position: absolute;
+      top: 210px;
+      right: 20px;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .play-btn {
+      background: #ffcc00;
+      border-radius: 50%;
       width: 80px;
       height: 80px;
+      font-size: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      border: none;
+      box-shadow: 0 0 15px #00000099;
+      margin: 20px auto;
+      cursor: pointer;
+    }
+    .social {
+      position: absolute;
+      right: 15px;
+      top: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .social a {
+      background: white;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
-      object-fit: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: black;
+      text-decoration: none;
+      transition: transform 0.3s;
     }
-  </style>
-</head>
-<body>
-  <div class="logo">
-    <img src="https://i.postimg.cc/L6gpQ8hG/playpause.png" alt="Radio Fama Logo">
-  </div>
-  <h1 style="color:#c62828;">Radio Fama</h1>
+    .social a:hover {
+      transform: scale(1.1);
+    }
+    .footer {
+      margin-top: 40px;
+      padding: 10px;
+      background: rgba(0,0,0,0.5);
+    }
+  
+  /* Puedes cambiar el fondo aquí: reemplaza 'fondo.jpg' por tu imagen */
+  body {
+    background: url('fondo.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
+</style>
+
+<style>
+#share-btn {
+  all: unset;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 999;
+}
+#share-btn a, #share-btn img {
+  all: unset;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+</style>
+
+
+<script>
+function compartirContenido() {
+  const url = window.location.href;
+  const texto = 'Escucha la radio del amor ❤️ en ' + url;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'Radio Pasión',
+      text: texto,
+      url: url
+    }).catch(console.error);
+  } else {
+    const mensaje = encodeURIComponent(texto);
+    const enlaces = [
+      'https://www.facebook.com/sharer/sharer.php?u=' + url,
+      'https://api.whatsapp.com/send?text=' + mensaje,
+      'https://t.me/share/url?url=' + url + '&text=' + mensaje,
+      'https://twitter.com/intent/tweet?text=' + mensaje
+    ];
+    alert('Tu navegador no soporta compartir directamente. Puedes copiar el enlace:
+' + url);
+    window.open(enlaces[0], '_blank');
+  }
+}
+</script>
+
+
+<script>
+function compartirContenido() {
+  const url = "https://radiopasion.com";
+  const texto = "Escucha la radio del amor ❤️ en " + url;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'Radio Pasión',
+      text: texto,
+      url: url
+    }).catch(console.error);
+  } else {
+    const mensaje = encodeURIComponent(texto);
+    const enlaces = [
+      'https://www.facebook.com/sharer/sharer.php?u=' + url,
+      'https://api.whatsapp.com/send?text=' + mensaje,
+      'https://t.me/share/url?url=' + url + '&text=' + mensaje,
+      'https://twitter.com/intent/tweet?text=' + mensaje
+    ];
+
+    enlaces.forEach(link => window.open(link, '_blank'));
+  }
+}
+</script>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+  background: linear-gradient(135deg, #fff1f2, #ffe0e0);
+  background-attachment: fixed;
+}
+</style>
+
+
+<style>
+  [id*="share"], [class*="share"],
+  [id*="install"], [class*="install"] {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  body.splash-hecho [id*="share"], body.splash-hecho [class*="share"],
+  body.splash-hecho [id*="install"], body.splash-hecho [class*="install"] {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+</style>
+<script>
+  setTimeout(() => {
+    document.body.classList.add("splash-hecho");
+  }, 8000);
+</script>
+
+
+<style>
+  .oculto { display: none; }
+  .activo { display: block !important; }
+</style>
+</head>
+
+<body>
+
+<!-- SPLASH CON VIDEO Y LOGO -->
+<div class="splash-container" id="splash">
+  <video class="bg-video" autoplay muted playsinline>
+    <source src="https://filesamples.com/samples/video/mp4/sample_640x360.mp4" type="video/mp4">
+    Tu navegador no soporta HTML5.
+  </video>
+
+<audio id="audio-cuna" autoplay>
+  <source src="https://audio-six-xi.vercel.app/radiofama_cuna_amplificada.mp3" type="audio/mpeg">
+</audio>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const audio = document.getElementById("audio-cuna");
+    const play = () => {
+      audio.play().catch(() => {
+        console.log("Reproducción automática bloqueada");
+      });
+    };
+    play();
+    document.addEventListener("click", play, { once: true });
+  });
+</script>
+
+  <div class="logo-overlay">
+    <img src="https://i.postimg.cc/KY4g2Dt0/envivo-1.gif" alt="Logo Radio Fama" style="width:180px;height:180px;">
+  </div>
+</div>
+<style>
+  .splash-container {
+    position: fixed; width: 100%; height: 100%; background: #000;
+    z-index: 1000; display: flex; align-items: center; justify-content: center;
+  }
+  video.bg-video {
+    position: absolute; width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(0.7) blur(2px);
+    z-index: 1;
+  }
+  .logo-overlay {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+</style>
+<script>
+  setTimeout(() => {
+    document.getElementById("splash").remove();
+  }, 8000);
+</script>
+
+
+
+
+
+
+<div style="position:fixed;top:5px;right:5px;z-index:9999;">
+  <button onclick="compartirContenido()" title="Compartir"
+    style="width:50px;height:50px;border:none;background:url('https://i.postimg.cc/prrzkk4K/share.png') center center no-repeat;
+           background-size: cover; border-radius: 50%; cursor: pointer;">
+  </button>
+</div>
+
+
+
+
+<div style="position:fixed;top:5px;right:5px;z-index:9999;">
+  <button onclick="compartirContenido()" title="Compartir"
+    style="width:50px;height:50px;border:none;background:url('https://i.postimg.cc/prrzkk4K/share.png') center center no-repeat;
+           background-size: cover; border-radius: 50%; cursor: pointer;">
+  </button>
+</div>
+
+
+
+<div style="position:fixed;top:0px;right:15px;z-index:9999;">
+  
+</div>
+
+
+<div style="position:fixed;top:15px;right:15px;z-index:999;">
+  
+</div>
+
+
+<header>
+  Radio Pasión
+  
+</header>
+<div class="main" style="margin-bottom: 40px;">
+<!-- Puedes cambiar esta imagen: logo.png.[png|jpg] -->
+<img alt="Radio Pasión Logo" class="logo" src="logo.png" style="margin-top: 60px; width: 200px; height: 200px;"/>
+<div class="live-badge">LIVE</div>
+<div class="status" id="status">EN PAUSA</div>
+<audio id="audio">
+<source src="https://mediastreamm.com/8226/stream" type="audio/mpeg"/>
+</audio>
+<h2 style="font-size: 20px; margin-bottom: 0px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white;">Radio Pasión</h2>
+<p style="font-size: 14px; margin-bottom: 10px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">La radio del amor</p>
+<div style="margin-top: 40px;"><button class="play-btn" id="playButton" onclick="togglePlay()">▶</button></div>
+</div>
+<div class="social" style="margin-top: 20px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;">
+<a href="https://facebook.com/radiopasion" target="_blank"><img alt="Facebook" src="https://i.postimg.cc/8kfCdqnt/facebook.png" style="width:45px;height:45px;border-radius:50%;object-fit:cover;"/></a>
+<a href="https://youtube.com/@radiopasion" target="_blank"><img alt="YouTube" src="https://i.postimg.cc/8z59MVZC/youtube.png" style="width:45px;height:45px;border-radius:50%;object-fit:cover;"/></a>
+<a href="https://wa.me/?text=Escucha%20Radio%20Pasi%C3%B3n%20en%20https%3A%2F%2Fradiopasion.com" target="_blank"><img alt="WhatsApp" src="https://i.postimg.cc/1zFWrRwy/whatsapp.png" style="width:45px;height:45px;border-radius:50%;object-fit:cover;"/></a>
+<a href="https://tiktok.com/@radiopasion" target="_blank"><img alt="TikTok" src="https://i.postimg.cc/c1FcYt2Q/tiktok.png" style="width:45px;height:45px;border-radius:50%;object-fit:cover;"/></a>
+<a href="https://t.me/radiopasion" target="_blank"><img alt="Telegram" src="https://i.postimg.cc/wvLjzNNn/telegram-icon-free-png.png" style="width:45px;height:45px;border-radius:50%;object-fit:cover;"/></a>
+</div>
+<script>
+  const audio = document.getElementById("audio");
+  const playBtn = document.getElementById("playButton");
+  const status = document.getElementById("status");
+
+  function togglePlay() {
+    if (audio.paused) {
+      audio.play().then(() => {
+        playBtn.textContent = '⏸';
+        status.textContent = 'EN VIVO';
+      }).catch(() => {
+        alert("Toca para permitir reproducir el audio");
+      });
+    } else {
+      audio.pause();
+      playBtn.textContent = '▶';
+      status.textContent = 'EN PAUSA';
     }
-  </script>
+  }
+
+    // Ocultar si ya fue instalada
+    window.addEventListener('appinstalled', () => {
+      localStorage.setItem('appInstalled', 'true');
+      installContainer.style.display = 'none';
+    });
+
+    if (localStorage.getItem('appInstalled') === 'true') {
+      installContainer.style.display = 'none';
+    }
+    </script>
+<script>
+  function compartir() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Radio Pasión',
+        text: 'Escucha Radio Pasión en vivo',
+        url: window.location.href
+      }).catch(console.error);
+    } else {
+      alert("Tu navegador no soporta la función de compartir.");
+    }
+  }
+
+    // Ocultar si ya fue instalada
+    window.addEventListener('appinstalled', () => {
+      localStorage.setItem('appInstalled', 'true');
+      installContainer.style.display = 'none';
+    });
+
+    if (localStorage.getItem('appInstalled') === 'true') {
+      installContainer.style.display = 'none';
+    }
+    </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(function() {
+      console.log('Service Worker registrado');
+    });
+  }
+
+    // Ocultar si ya fue instalada
+    window.addEventListener('appinstalled', () => {
+      localStorage.setItem('appInstalled', 'true');
+      installContainer.style.display = 'none';
+    });
+
+    if (localStorage.getItem('appInstalled') === 'true') {
+      installContainer.style.display = 'none';
+    }
+    </script>
+<div id="installContainer" style="position:fixed; bottom:20px; right:20px; background:#fff; padding:10px 15px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.3); z-index:1000;">
+<button id="installBtn" style="background:#e91e63; color:white; border:none; padding:10px 15px; border-radius:5px; font-weight:bold; cursor:pointer;">
+    Instalar aquí la app
+  </button>
+</div>
+<script>
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
+  const installContainer = document.getElementById('installContainer');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installContainer.style.display = 'block';
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        installContainer.style.display = 'none';
+      }
+      deferredPrompt = null;
+    }
+  });
+
+    // Ocultar si ya fue instalada
+    window.addEventListener('appinstalled', () => {
+      localStorage.setItem('appInstalled', 'true');
+      installContainer.style.display = 'none';
+    });
+
+    if (localStorage.getItem('appInstalled') === 'true') {
+      installContainer.style.display = 'none';
+    }
+    </script>
+<div class="social" style="margin-top: 20px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;">
+<a href="https://facebook.com/radiopasion" target="_blank"><img alt="Facebook" src="https://i.postimg.cc/8kfCdqnt/facebook.png" style="width:45px;height:45px;border-radius:50%;object-fit:cover;"/></a>
+<a href="https://youtube.com/@radiopasion" target="_blank"><img alt="YouTube" src="https://i.postimg.cc/8z59MVZC/youtube.png" style="width:45px;height:45px;border-radius:50%;object-fit:cover;"/></a>
+<a href="https://wa.me/?text=Escucha%20Radio%20Pasi%C3%B3n%20en%20https%3A%2F%2Fradiopasion.com" target="_blank"><img alt="WhatsApp" src="https://i.postimg.cc/1zFWrRwy/whatsapp.png" style="width:45px;height:45px;border-radius:50%;object-fit:cover;"/></a>
+<a href="https://tiktok.com/@radiopasion" target="_blank"><img alt="TikTok" src="https://i.postimg.cc/c1FcYt2Q/tiktok.png" style="width:45px;height:45px;border-radius:50%;object-fit:cover;"/></a>
+<a href="https://t.me/radiopasion" target="_blank"><img alt="Telegram" src="https://i.postimg.cc/wvLjzNNn/telegram-icon-free-png.png" style="width:45px;height:45px;border-radius:50%;object-fit:cover;"/></a>
+</div>
+
+
+<!-- Para mostrar tus noticias de Blogger, reemplaza el iframe o usa Google Feed para tu blog RSS -->
+
+
+
+
+
+
+
+
+<!-- NOTICIAS DE TODO EL PERÚ (INCLUYENDO CAJAMARCA) -->
+<script>
+if ('serviceWorker' in navigator) {
+ navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+
+<!-- NOTICIAS ANIMADAS UNA POR UNA -->
+<div id="noticias-actualizadas" style="max-width: 600px; margin: 30px auto; font-family: sans-serif; background: #fff8e1; padding: 15px 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+  <h2 style="text-align:center; color:#c62828;">📰 Noticias recientes</h2>
+  <div id="noticia-actual" style="text-align:center; transition: opacity 0.5s; min-height: 50px;">Cargando noticias...</div>
+</div>
+<script>
+let noticias = [], indice = 0;
+const feeds = [
+  "https://rpp.pe/feed",
+  "https://elcomercio.pe/rss/ultimas/",
+  "https://andina.pe/agencia/rss.aspx",
+  "https://diariopanorama.pe/feed/"
+];
+
+async function cargarTodasNoticias() {
+  try {
+    let todas = [];
+    for (const url of feeds) {
+      const res = await fetch("https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(url));
+      const data = await res.json();
+      todas = todas.concat(data.items || []);
+    }
+    noticias = todas.slice(0, 10);
+    mostrarNoticia();
+    setInterval(mostrarNoticia, 5000);
+  } catch {
+    document.getElementById("noticia-actual").innerText = "No se pudieron cargar noticias.";
+  }
+}
+
+function mostrarNoticia() {
+  if (noticias.length === 0) return;
+  const contenedor = document.getElementById("noticia-actual");
+  contenedor.style.opacity = 0;
+  setTimeout(() => {
+    contenedor.innerHTML = `<a href="${noticias[indice].link}" target="_blank" style="text-decoration:none;color:#333;">🗞️ ${noticias[indice].title}</a>`;
+    contenedor.style.opacity = 1;
+    indice = (indice + 1) % noticias.length;
+  }, 300);
+}
+
+cargarTodasNoticias();
+</script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const splash = document.getElementById("splash");
+    const main = document.getElementById("main-content");
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setTimeout(() => {
+        splash?.remove();
+        main?.classList.add("activo");
+      }, 8000);
+    } else {
+      splash?.remove();
+      main?.classList.add("activo");
+    }
+  });
+</script>
+
 </body>
 </html>

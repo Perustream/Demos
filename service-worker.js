@@ -1,15 +1,16 @@
 
-self.addEventListener('install', function(e) {
+self.addEventListener("install", function(e) {
   e.waitUntil(
-    caches.open('radio-fama-cache').then(function(cache) {
+    caches.open("radiofama-store").then(function(cache) {
       return cache.addAll([
-        './index.html',
-        './manifest.json'
+        "/radiofama_splash_audio_vercel.html",
+        "/manifest.json"
       ]);
     })
   );
 });
-self.addEventListener('fetch', function(e) {
+
+self.addEventListener("fetch", function(e) {
   e.respondWith(
     caches.match(e.request).then(function(response) {
       return response || fetch(e.request);
