@@ -2,7 +2,7 @@
 {
   "name": "Radio Fama",
   "short_name": "RadioFama",
-  "start_url": "radiofama_splash_audio_vercel.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#c62828",
